@@ -8,8 +8,8 @@ score_list = []
 all_bricks = {}
 
 
-# make_wall function creates a wall of bricks and stores their positions in the all_bricks dictionary
-def make_wall():
+def make_wall() -> None:
+    """Create a wall of bricks and store their positions in all_bricks dictionary"""
     color_nr = 0
     brick_x = -555
     brick_y = 0
@@ -25,7 +25,13 @@ def make_wall():
 
 
 class Brick(Turtle):
-    def __init__(self, row_nr):
+    """Manage the properties and movement of the bricks."""
+    def __init__(self, row_nr: int) -> None:
+        """Initialize a Brick object inheriting from the Turtle class.
+
+        Keyboard arguments:
+        row_nr -- indicates the color a brick should have based on the row it is in
+        """
         super().__init__()
         self.hideturtle()
         self.color(COLORS[row_nr])
@@ -36,11 +42,12 @@ class Brick(Turtle):
         self.setheading(90)
         self.showturtle()
 
-    def move(self, x, y):
+    def move(self, x: int, y: int) -> None:
+        """Move the brick object to other coordinates."""
         self.goto(x, y)
 
-    # change_color method changes the color of the bricks and hides them when 'destroyed'
-    def change_color(self):
+    def change_color(self) -> int:
+        """Change the color of a brick and hide it when 'destroyed'"""
         bricks_hit.append(0)
         new_index = COLORS.index(self.color()[0]) - 1
         if new_index < 0:

@@ -2,14 +2,17 @@ from turtle import Turtle
 from random import randint
 from brick import all_bricks
 from sounds import Sound
+from paddle import Paddle
+from typing import Optional
+
 
 STARTING_POSITION = 0, -230
 sound = Sound()
 last_side = ['dummy']
 
 
-# starting_angle function randomly sets the starting direction of the ball
-def starting_angle():
+def starting_angle() -> int:
+    """Randomly set the starting direction of the ball."""
     starting_angle = randint(20, 160)
     while 92 > starting_angle > 88:
         starting_angle = randint(20, 160)
@@ -17,7 +20,12 @@ def starting_angle():
 
 
 class Ball(Turtle):
-    def __init__(self):
+    """Manage the properties and behaviour of the ball and its collisions with the other objects."""
+
+    speed: float
+
+    def __init__(self) -> None:
+        """Initialize a Ball object inheriting from the Turtle class."""
         super().__init__()
         self.hideturtle()
         self.penup()
@@ -28,20 +36,27 @@ class Ball(Turtle):
         self.showturtle()
         self.speed = 2.4
 
-    # increase_speed method increases the speed of the ball after a brick is hit
-    def increase_speed(self):
+    def increase_speed(self) -> None:
+        """Increase the speed of the ball after a brick is hit."""
         if len(all_bricks) < 60:
             self.speed += 0.002
 
-    # detect_collision method checks for collisions with the paddle and bricks and returns the side of the collision
-    def detect_collision(self, x, y, paddle):
-        def collision_paddle():
+    def detect_collision(self, x: float, y: float, paddle: Paddle) -> Optional[str]:
+        """Encompass functions which check for collisions with the paddle and bricks, return the side of the collision.
+
+        Keyboard arguments:
+        x -- the x coordinate of the ball
+        y -- the y coordinate of the ball
+        paddle -- the Paddle object
+        """
+        def collision_paddle() -> str:
+            """Check if the ball collides with the paddle and return the side of the collision"""
             paddle_x = paddle.xcor()
             if paddle_x + 80 >= x >= paddle_x - 80 and -260 <= y <= -260 + self.speed:
                 current_angle = self.heading()
-                # ball moving to the right
+                """Ball moving to the right"""
                 direction = 1
-                # ball moving to the left
+                """Ball moving to the left"""
                 if current_angle < 270:
                     direction = -1
                 if x > paddle_x + 40:
@@ -67,7 +82,8 @@ class Ball(Turtle):
                 return 'top'
             return 'None'
 
-        def collision_bricks():
+        def collision_bricks() -> str:
+            """Check if the ball collides with the bricks and return the side of the collision"""
             for brick, sides in all_bricks.items():
                 side = 'None'
                 top = sides['top']
@@ -96,7 +112,7 @@ class Ball(Turtle):
         side_paddle = collision_paddle()
         side_brick = collision_bricks()
 
-        # below collisions with the boundaries of the screen are detected
+        """Below collisions with the boundaries of the screen are detected."""
         if x >= 585:
             sound.play_sound(2)
             return 'right'
@@ -114,8 +130,12 @@ class Ball(Turtle):
         else:
             return 'None'
 
-    # bounce method adjusts the ball's direction based on the side of the collision:
-    def bounce(self, side):
+    def bounce(self, side: str) -> None:
+        """Adjust the ball's direction based on the side of the collision.
+
+        Keyboard arguments:
+        side -- the side from which the ball should bounce
+        """
         if side not in ['None', last_side[0], 'dummy']:
             old_angle = self.heading()
             direction = 1
@@ -136,15 +156,19 @@ class Ball(Turtle):
             last_side[0] = side
             self.setheading(new_angle)
 
-    # move method binds all the previous methods together and finally moves the ball
-    def move(self, paddle):
+    def move(self, paddle: Paddle) -> None:
+        """Bind all the previous methods together and move the ball.
+
+        Keyboard arguments:
+        paddle -- the Paddle object
+        """
         ball_x = self.xcor()
         ball_y = self.ycor()
         side = self.detect_collision(ball_x, ball_y, paddle)
         self.bounce(side)
         self.forward(self.speed)
 
-    # initialize a new round with the paddle in the middle and a random angle for the ball
-    def initialize(self):
+    def initialize(self) -> None:
+        """Initialize a new round with the paddle in the middle and a random angle for the ball."""
         self.goto(STARTING_POSITION)
         self.setheading(starting_angle())

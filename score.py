@@ -6,7 +6,13 @@ sound = Sound()
 
 
 class Score(Turtle):
+    """Manage the display of the score and the remaining lives."""
+
+    lives: int
+    score: int
+
     def __init__(self):
+        """Initialize a Score object inheriting from the Turtle class."""
         super().__init__()
         self.hideturtle()
         self.penup()
@@ -17,13 +23,13 @@ class Score(Turtle):
         self.score = 0
         self.write(arg=f'lives: 3 score: 0', font=('Arial', 18, 'bold'))
 
-    # update_score method writes a new score on the screen
-    def update_score(self):
+    def update_score(self) -> None:
+        """Write a new score on the screen."""
         self.clear()
         self.write(arg=f'lives: {self.lives} score: {self.score}', font=('Arial', 18, 'bold'))
 
-    # game_over method subtracts a life and checks if the game should continue
-    def game_over(self):
+    def game_over(self) -> bool:
+        """Subtract a life and check if the game should continue. Display the final score."""
         self.lives -= 1
         if self.lives == 0:
             self.clear()
