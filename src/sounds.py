@@ -12,9 +12,11 @@ def get_path_from_config(key: str) -> str:
     key -- the name of the category folder to be located.
     """
     config = configparser.ConfigParser()
-    config_path = os.path.join(os.path.dirname(__file__), 'config.ini')
+    config_path = os.path.join(os.path.dirname(__file__), '../config.ini')
     config.read(config_path)
-    return config.get('Paths', key)
+    relative_path = config.get('Paths', key)
+    absolute_path = os.path.join(os.path.dirname(__file__), '../', relative_path)
+    return absolute_path
 
 
 class Sound:
