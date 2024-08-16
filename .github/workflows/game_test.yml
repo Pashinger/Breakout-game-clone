@@ -1,9 +1,10 @@
 name: Breakout-game-clone-test
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   test:
@@ -14,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10]
+        python-version: [3.9, 3.10, 3.11]
 
     steps:
       - uses: actions/checkout@v3
@@ -29,5 +30,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r ../requirements.txt
 
-      - name: Test App Code
-        run: python ./main_test.py
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          flake8 .
+
+      - name: Run tests
+        run: |
+          pytest
