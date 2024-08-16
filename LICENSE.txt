@@ -1,5 +1,7 @@
 MIT License
 
+Breakout Game Clone
+
 Copyright (c) 2024 Jakub Gniewek
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
