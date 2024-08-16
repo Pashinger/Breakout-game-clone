@@ -44,5 +44,3 @@ def run_game() -> None:
 
 if __name__ == '__main__':
     run_game()
-
-# ADDITIONAL CODE FOR TEST - ADDED RULESET
