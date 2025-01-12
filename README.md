@@ -11,14 +11,18 @@ My take on the classic Breakout game, with sounds.
 <ol>
   <li>Clone the GitHub repository.</li>
   <li>In terminal, install requirements:
+    
     ```
     pip install -t requirements.txt
     ```
+    
   </li> 
   <li>In terminal, use command:
+    
     ```
     python src\main.py
     ```
+    
   </li>
 </ol>
 <h3>Licence</h3>
